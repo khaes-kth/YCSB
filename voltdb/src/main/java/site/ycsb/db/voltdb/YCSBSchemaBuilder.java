@@ -174,23 +174,6 @@ public final class YCSBSchemaBuilder {
     File file = new File(tempDir + File.separator + jarFileName);
 
     byte[] jarFileContents = new byte[(int) file.length()];
-    FileInputStream fis = new FileInputStream(file);
-    fis.read(jarFileContents);
-    fis.close();
-    logger.info("Calling @UpdateClasses to load JAR file containing procedures");
-
-    cr = voltClient.callProcedure("@UpdateClasses", jarFileContents, null);
-    if (cr.getStatus() != ClientResponse.SUCCESS) {
-      throw new Exception("Attempt to execute UpdateClasses failed:" + cr.getStatusString());
-    }
-
-    for (int i = 0; i < procStatements.length; i++) {
-      logger.info(procStatements[i]);
-      cr = voltClient.callProcedure("@AdHoc", procStatements[i]);
-      if (cr.getStatus() != ClientResponse.SUCCESS) {
-        throw new Exception("Attempt to execute '" + procStatements[i] + "' failed:" + cr.getStatusString());
-      }
-    }
 
   }
 
